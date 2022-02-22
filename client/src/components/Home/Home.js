@@ -9,55 +9,52 @@ import Loader from "../layout/Loader/Loader";
 import { useAlert } from "react-alert";
 
 const Home = () => {
-    const alert = useAlert();
-    const dispatch = useDispatch();
-    const { loading, error, products, productCount } = useSelector(
-        (state) => state.products
-    );
+  const alert = useAlert();
+  const dispatch = useDispatch();
+  const { loading, error, products, productCount } = useSelector(
+    (state) => state.products
+  );
 
-    console.log("products", products);
-    useEffect(() => {
-        if (error) {
-            // return alert.error(error);
-            alert.error(error);
-            dispatch(clearErrors());
-        }
-        dispatch(getProduct());
-    }, [dispatch, error, alert]);
+  console.log("products", products);
+  useEffect(() => {
+    if (error) {
+      // return alert.error(error);
+      alert.error(error);
+      dispatch(clearErrors());
+    }
+    dispatch(getProduct());
+  }, [dispatch, error, alert]);
 
-    return (
+  return (
+    <Fragment>
+      {loading ? (
+        <Loader />
+      ) : (
         <Fragment>
-            {loading ? (
-                <Loader />
-            ) : (
-                <Fragment>
-                    <MetaData title="ECOMMERCE" />
-                    <div className="banner">
-                        <p>Welcome to Ecommerce</p>
-                        <h1>FIND AMAZING PRODUCTS BELOW</h1>
+          <MetaData title="ECOMMERCE" />
+          <div className="banner">
+            <p>Welcome to Ecommerce</p>
+            <h1>FIND AMAZING PRODUCTS BELOW</h1>
 
-                        <a href="#container">
-                            <button>
-                                Scroll <CgMouse />
-                            </button>
-                        </a>
-                    </div>
+            <a href="#container">
+              <button>
+                Scroll <CgMouse />
+              </button>
+            </a>
+          </div>
 
-                    <h2 className="homeHeading">Featured Products</h2>
+          <h2 className="homeHeading">Featured Products</h2>
 
-                    <div className="container" id="container">
-                        {products &&
-                            products.map((product) => (
-                                <ProductCard
-                                    key={product._id}
-                                    product={product}
-                                />
-                            ))}
-                    </div>
-                </Fragment>
-            )}
+          <div className="container" id="container">
+            {products &&
+              products.map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))}
+          </div>
         </Fragment>
-    );
+      )}
+    </Fragment>
+  );
 };
 
 export default Home;
