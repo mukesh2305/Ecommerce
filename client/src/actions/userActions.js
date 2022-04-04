@@ -14,10 +14,11 @@ import {
   UPDATE_PROFILE_REQUEST,
   UPDATE_PROFILE_SUCCESS,
   UPDATE_PROFILE_FAIL,
-  UPDATE_PROFILE_RESET,
+  UPDATE_PASSWORD_REQUEST,
+  UPDATE_PASSWORD_SUCCESS,
+  UPDATE_PASSWORD_FAIL,
 } from "../constants/userConstants";
 import axios from "axios";
-import Cookies from "universal-cookie";
 
 // axios.defaults.withCredentials = true
 // Login User
@@ -139,6 +140,32 @@ export const updateProfile = (userData) => async (dispatch) => {
   }
 };
 
+// update Password
+export const updatePassword = (passwords) => async (dispatch) => {
+  try {
+    dispatch({ type: UPDATE_PASSWORD_REQUEST });
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")} `,
+      },
+    };
+    const { data } = await axios.put(
+      "http://localhost:4000/api/v1/password/update",
+      passwords,
+      config
+    );
+    dispatch({
+      type: UPDATE_PASSWORD_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: UPDATE_PASSWORD_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
 // Clearing Errors
 export const clearErrors = () => async (dispatch) => {
   dispatch({ type: CLEAR_ERRORS });

@@ -128,11 +128,7 @@ exports.resetPassword = CatchAsyncError(async (req, res, next) => {
   });
 
   if (!user) {
-    return next(
-      new ErrorHandler(
-        "Reset Password Token is Invalid or has been Expired",
-        400
-      )
+    return next(new ErrorHandler("Reset Password Token is Invalid or has been Expired", 400)
     );
   }
 
@@ -182,7 +178,6 @@ exports.updateUserPassword = CatchAsyncError(async (req, res, next) => {
 
 // update User profile
 exports.updateUserProfile = CatchAsyncError(async (req, res, next) => {
-  console.log("updateUserProfile");
   const newUserData = {
     name: req.body.name,
     email: req.body.email,
@@ -244,13 +239,17 @@ exports.getSingleUser = CatchAsyncError(async (req, res, next) => {
 
 // update User role --- Admin
 exports.updateUserRole = CatchAsyncError(async (req, res, next) => {
-  console.log("this");
+  const { name, email, role } = req.body;
+  // const newUserData = {
+  //   name: req.body.name,
+  //   email: req.body.email,
+  //   role: req.body.role,
+  // };
   const newUserData = {
-    name: req.body.name,
-    email: req.body.email,
-    role: req.body.role,
-  };
-
+    name,
+    email,
+    role,
+  }
   const user = await User.findByIdAndUpdate(req.params.id, newUserData, {
     new: true,
     runValidators: true,
@@ -260,6 +259,7 @@ exports.updateUserRole = CatchAsyncError(async (req, res, next) => {
     success: true,
   });
 });
+
 
 // Delete User  --- Admin
 exports.deleteUser = CatchAsyncError(async (req, res, next) => {
@@ -276,3 +276,6 @@ exports.deleteUser = CatchAsyncError(async (req, res, next) => {
     message: "User Deleted successfully",
   });
 });
+
+
+
